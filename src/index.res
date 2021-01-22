@@ -5,9 +5,16 @@
 @scope(("import", "meta", "hot")) @val
 external accept: unit => unit = "accept"
 
-%%raw(`import './index.css';`)
+%%raw(`import './tailwind.css';`)
 
-ReactDOMRe.renderToElementWithId(<React.StrictMode> <App /> </React.StrictMode>, "root")
+ReactDOMRe.renderToElementWithId(
+  <React.StrictMode>
+    <div className="flex w-screen h-screen">
+      <Auth> {authResult => <App user=authResult />} </Auth>
+    </div>
+  </React.StrictMode>,
+  "root",
+)
 
 if hot {
   accept()

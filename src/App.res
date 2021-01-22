@@ -1,33 +1,63 @@
-@module("./logo.svg") external logo: string = "default"
+type payload = {"message": array<string>}
+@bs.scope("JSON") @bs.val external parseResponse: Fetch.response => payload = "parse"
+@bs.get external getMessage: payload => array<string> = "message"
 
-%%raw(`import './App.css';`)
+type state =
+  | LoadingDogs
+  | ErrorFetchingDogs
+  | LoadedDogs(array<string>)
 
 @react.component
-let make = () => {
-  let (count, setCount) = React.useState(() => 0.)
+let make = (~user: FirebaseUI.authResult) => {
+  let (state, setState) = React.useState(() => LoadingDogs)
 
+  let x: int = ""
   React.useEffect0(() => {
-    let intervalId = Js.Global.setInterval(() => setCount(count => count +. 1.), 100)
+    let abort = Fetch.get("https://dog.ceo/api/breeds/image/random/3", state =>
+      switch state {
+      | Error(_) => setState(_ => ErrorFetchingDogs)
+      | Loaded(OK(res)) => setState(_ => LoadedDogs(res->parseResponse->getMessage))
+      | Loaded(NoContent) => setState(_ => LoadedDogs([]))
+      | _ => ()
+      }
+    )
 
-    Some(() => Js.Global.clearInterval(intervalId))
+    Some(abort)
   })
 
-  <div className="App">
-    <header className="App-header">
-      <img src=logo className="App-logo" alt="logo" />
-      <p>
-        {React.string("Edit ")}
-        <code> {React.string("src/App.jsx")} </code>
-        {React.string(" and save to reload.")}
-      </p>
-      <p>
-        {React.string("Page has been open for ")}
-        <code> {React.string(Printf.sprintf("%.1f", count /. 10.))} </code>
-        {React.string(" seconds")}
-      </p>
-      <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-        {React.string("Learn React")}
-      </a>
-    </header>
+  React.useEffect0(() => {
+    open Firestore
+    open Js.Promise
+
+    let unsub = db
+    ->collection("documents")
+    ->Collection.document("bOeoBPn75iRmQHjyUziv")
+    ->Document.onSnapshot(document => {
+      Js.log(document->Document.data)
+      ()
+    })
+
+    db->collection("documents")->Collection.collect->then_(documents => {
+      documents->Collection.forEach(document => {
+        Js.log(document->Document.data)
+      })
+
+      resolve()
+    }, _)->ignore
+
+    Some(unsub)
+  })
+
+  <div>
+    {switch state {
+    | LoadingDogs => React.string("Loading")
+    | ErrorFetchingDogs => React.string("Error")
+    | LoadedDogs(dogs) =>
+      React.array(
+        Belt.Array.map(dogs, d => {
+          <img key=d src=d />
+        }),
+      )
+    }}
   </div>
 }

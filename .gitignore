@@ -24,3 +24,12 @@ yarn-error.log*
 .merlin
 *.bs.js
 .bsb.lock
+
+.pnpm-store
+.vscode
+
+# Firebase
+.firebase
+
+# Snowpack
+.snowpack
