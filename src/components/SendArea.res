@@ -1,8 +1,8 @@
 open Classnames
 
-let addDocument = (document: Feed.content) => {
+let addMessage = (content: Feed.content) => {
   open Firestore
-  db->collection("documents")->Collection.add(document)
+  db->collection("documents")->Collection.add(content)
 }
 
 @react.component
@@ -11,21 +11,33 @@ let make = (~user: Firebase.Auth.user) => {
   let expanded = state != ""
   let rows = state->Js.String2.splitAtMost("\n", ~limit=3)->Belt.Array.length
 
-  let onSubmit = event => {
+  let sendMessage = () => {
     open Firestore.Timestamp
-
-    ReactEvent.Form.preventDefault(event)
     switch state {
     | "" => ()
     | _ => {
         setState(_ => "")
-        addDocument({
+        addMessage({
           files: [],
           text: state,
           uid: user.uid,
           created: serverTimestamp(),
         })
       }
+    }
+  }
+
+  let onSubmit = event => {
+    open ReactEvent
+    Form.preventDefault(event)
+    sendMessage()
+  }
+
+  let onEnter = event => {
+    open ReactEvent
+    if Keyboard.key(event) == "Enter" && !Keyboard.shiftKey(event) {
+      Keyboard.preventDefault(event)
+      sendMessage()
     }
   }
 
@@ -47,6 +59,7 @@ let make = (~user: Firebase.Auth.user) => {
           "flex-grow bg-gray-200 resize-none  min-w-0 opacity-100",
           "focus:outline-none",
         ])}
+        onKeyDown=onEnter
         value=state
         onChange={event => setState(_ => ReactEvent.Form.target(event)["value"])}
       />

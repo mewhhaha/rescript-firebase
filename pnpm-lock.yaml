@@ -17,6 +17,7 @@ importers:
       postcss: 8.2.4
       postcss-cli: 8.3.1_postcss@8.2.4
       prettier: 2.2.1
+      shx: 0.3.3
       snowpack: 3.0.11
       snowpack-plugin-rescript: 1.0.0
       tailwindcss: 2.0.2_d337930ac9ab3cde8278bf6b015e1ea7
@@ -36,6 +37,7 @@ importers:
       react: ^17.0.1
       react-dom: ^17.0.1
       reason-react: ^0.9.1
+      shx: ^0.3.3
       snowpack: ^3.0.11
       snowpack-plugin-rescript: ^1.0.0
       tailwindcss: ^2.0.2
@@ -1979,6 +1981,12 @@ packages:
   /inherits/2.0.4:
     resolution:
       integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+  /interpret/1.4.0:
+    dev: true
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
   /ipaddr.js/1.9.1:
     dev: false
     engines:
@@ -2797,6 +2805,14 @@ packages:
       react-dom: ^16.8.1
     resolution:
       integrity: sha512-nlH0O2TDy9KzOLOW+vlEQk4ExHOeciyzFdoLcsmmiit6hx6H5+CVDrwJ+8aiaLT/kqK5xFOjy4PS7PftWz4plA==
+  /rechoir/0.6.2:
+    dependencies:
+      resolve: 1.19.0
+    dev: true
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   /reduce-css-calc/2.1.8:
     dependencies:
       css-unit-converter: 1.1.2
@@ -2934,6 +2950,27 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
+  /shelljs/0.8.4:
+    dependencies:
+      glob: 7.1.6
+      interpret: 1.4.0
+      rechoir: 0.6.2
+    dev: true
+    engines:
+      node: '>=4'
+    hasBin: true
+    resolution:
+      integrity: sha512-7gk3UZ9kOfPLIAbslLzyWeGiEqx9e3rxwZM0KE6EL8GlGwjym9Mrlx5/p33bWTu9YG6vcS4MBxYZDHYr5lr8BQ==
+  /shx/0.3.3:
+    dependencies:
+      minimist: 1.2.5
+      shelljs: 0.8.4
+    dev: true
+    engines:
+      node: '>=6'
+    hasBin: true
+    resolution:
+      integrity: sha512-nZJ3HFWVoTSyyB+evEKjJ1STiixGztlqwKLTUNV5KqMWtGey9fTd4KU1gdZ1X9BV6215pswQ/Jew9NsuS/fNDA==
   /signal-exit/3.0.3:
     resolution:
       integrity: sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
