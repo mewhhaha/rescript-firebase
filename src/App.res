@@ -1,63 +1,42 @@
-type payload = {"message": array<string>}
-@bs.scope("JSON") @bs.val external parseResponse: Fetch.response => payload = "parse"
-@bs.get external getMessage: payload => array<string> = "message"
-
 type state =
-  | LoadingDogs
-  | ErrorFetchingDogs
-  | LoadedDogs(array<string>)
+  | LoadingDocuments
+  | ErrorDocuments
+  | LoadedDocuments(array<Feed.get>)
+@send external documentData: Firestore.document => Feed.get = "data"
+
+let onDocuments = callback => {
+  open Firestore
+  db->collection("documents")->Collection.onSnapshot(callback)
+}
 
 @react.component
-let make = (~user: FirebaseUI.authResult) => {
-  let (state, setState) = React.useState(() => LoadingDogs)
-
-  let x: int = ""
-  React.useEffect0(() => {
-    let abort = Fetch.get("https://dog.ceo/api/breeds/image/random/3", state =>
-      switch state {
-      | Error(_) => setState(_ => ErrorFetchingDogs)
-      | Loaded(OK(res)) => setState(_ => LoadedDogs(res->parseResponse->getMessage))
-      | Loaded(NoContent) => setState(_ => LoadedDogs([]))
-      | _ => ()
-      }
-    )
-
-    Some(abort)
-  })
+let make = (~user: Firebase.Auth.user) => {
+  let (state, setState) = React.useState(() => LoadingDocuments)
 
   React.useEffect0(() => {
     open Firestore
-    open Js.Promise
 
-    let unsub = db
-    ->collection("documents")
-    ->Collection.document("bOeoBPn75iRmQHjyUziv")
-    ->Document.onSnapshot(document => {
-      Js.log(document->Document.data)
-      ()
-    })
-
-    db->collection("documents")->Collection.collect->then_(documents => {
-      documents->Collection.forEach(document => {
-        Js.log(document->Document.data)
-      })
-
-      resolve()
-    }, _)->ignore
+    let callback = query => {
+      let docs = query->Collection.toArray |> Js.Array.map(doc => doc->documentData)
+      setState(_ => LoadedDocuments(docs))
+    }
+    let unsub = onDocuments(callback)
 
     Some(unsub)
   })
 
-  <div>
+  <div className="flex flex-col flex-grow">
     {switch state {
-    | LoadingDogs => React.string("Loading")
-    | ErrorFetchingDogs => React.string("Error")
-    | LoadedDogs(dogs) =>
-      React.array(
-        Belt.Array.map(dogs, d => {
-          <img key=d src=d />
-        }),
-      )
+    | LoadingDocuments => React.string("Loading")
+    | ErrorDocuments => React.string("Error")
+    | LoadedDocuments(payload) =>
+      payload
+      ->Belt.Array.map(({id, files, text}) => {
+        let Feed.ID(idString) = id
+        <div key=idString> <FileArea files /> <div> {React.string(text)} </div> </div>
+      })
+      ->React.array
     }}
+    <SendArea user />
   </div>
 }

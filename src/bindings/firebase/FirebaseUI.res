@@ -1,28 +1,10 @@
 type firebaseUI
 type auth
 type authUI
-type accessToken
-type refreshToken
-type idToken
-type emailAddress
-
-type credential = {
-  accessToken: accessToken,
-  idToken: idToken,
-}
-type user = {
-  displayName: string,
-  refreshToken: refreshToken,
-  email: emailAddress,
-}
-type authResult = {
-  credential: credential,
-  user: user,
-}
 type redirectUrl
 
 type authCallbacks = {
-  signInSuccessWithAuthResult: (authResult, redirectUrl) => bool,
+  signInSuccessWithAuthResult: (Firebase.Auth.authResult, redirectUrl) => bool,
   signInSuccessUrl: string,
   signInFlow: option<[#popup]>,
 }

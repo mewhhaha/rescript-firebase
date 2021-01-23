@@ -1,4 +1,4 @@
-type state = Sign | SignedIn(FirebaseUI.authResult) | SignedOut
+type state = Sign | SignedIn(Firebase.Auth.authResult) | SignedOut
 
 @react.component
 let make = (~children) => {
@@ -17,7 +17,7 @@ let make = (~children) => {
     <div className="flex flex-grow items-center justify-center">
       <div id="firebaseui-auth-container" />
     </div>
-  | SignedIn(authResult) => children(authResult)
+  | SignedIn(authResult) => children(authResult.user)
   | SignedOut => React.string("Bye")
   }
 }
