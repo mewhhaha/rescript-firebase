@@ -9,7 +9,8 @@ let onDocuments = callback => {
   db->collection("documents")->Collection.orderBy("created", #asc)->Collection.onSnapshot(callback)
 }
 
-let scrollToBottom = el => ReactDOM.domElementToObj(el)["scrollIntoView"](~block="end", ~smooth=true)
+let scrollToBottom = el =>
+  ReactDOM.domElementToObj(el)["scrollIntoView"](~block="end", ~smooth=true)
 
 let scrollToSelf = (divRef: React.ref<Js.Nullable.t<Dom.element>>) => {
   switch divRef.current->Js.Nullable.toOption {
@@ -47,9 +48,9 @@ let make = (~user: Firebase.Auth.user) => {
     Some(unsub)
   })
 
-  <div className="flex flex-col w-full min-h-0 max-w-sm">
+  <div className="flex flex-col w-full min-h-0 max-w-sm h-full max-h-96">
     <div
-      className="flex flex-col overflow-y-scroll overflow-anchor-none w-full h-64 bg-gray-700 p-1">
+      className="flex flex-col flex-grow overflow-y-scroll overflow-anchor-none w-full bg-gray-700 p-1">
       {switch state {
       | LoadingDocuments => React.string("Loading")
       | ErrorDocuments => React.string("Error")

@@ -8,7 +8,7 @@ let addMessage = (content: Feed.content) => {
 @react.component
 let make = (~user: Firebase.Auth.user) => {
   let (state, setState) = React.useState(() => "")
-  let expanded = state != ""
+  let expanded = Js.String2.trim(state) != ""
   let rows = state->Js.String2.splitAtMost("\n", ~limit=3)->Belt.Array.length
 
   let sendMessage = () => {
@@ -41,7 +41,7 @@ let make = (~user: Firebase.Auth.user) => {
     }
   }
 
-  <form className="flex p-4 items-center space-x-2 w-full bg-gray-700" onSubmit>
+  <form className="flex p-4 items-end space-x-2 w-full bg-gray-700" onSubmit>
     <div
       className={cn([
         "flex space-x-2 transition-all",
@@ -51,7 +51,8 @@ let make = (~user: Firebase.Auth.user) => {
       <IconButton disabled={expanded} id="video" icon={React.string("V")} />
       <IconButton disabled={expanded} id="image" icon={React.string("I")} />
     </div>
-    <div className="flex flex-grow rounded-2xl min-w-0 bg-gray-200 px-4 py-1 focus-within:ring">
+    <div
+      className="flex flex-grow rounded-2xl min-w-0 bg-gray-200 px-4 py-1 focus-within:ring -mb-1">
       <textarea
         placeholder="Aa"
         rows
