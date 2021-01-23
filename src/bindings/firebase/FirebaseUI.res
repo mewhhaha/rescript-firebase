@@ -29,4 +29,4 @@ let config = {
   },
 }
 
-let start = ui->startUI(container, config)
+let start = () => ui->startUI(container, config)

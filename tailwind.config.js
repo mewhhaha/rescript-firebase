@@ -8,7 +8,8 @@ module.exports = {
   },
   variants: {
     extend: {
-      width: ['focus']
+      width: ['focus'],
+      margin: ['first']
     },
   },
   plugins: [],

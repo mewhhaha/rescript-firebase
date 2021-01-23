@@ -32,5 +32,7 @@ module Auth = {
   @scope(("firebase", "auth")) @val external googleAuthProvider: provider = "GoogleAuthProvider"
   @get external getProviderId: provider => signInOption = "PROVIDER_ID"
   @send external currentUser: auth => user = "currentUser"
-  @send external onAuthStateChanged: (auth, user => unit) => unsubscribe = "onAuthStateChanged"
+  @send
+  external onAuthStateChanged: (auth, Js.Nullable.t<user> => unit) => unsubscribe =
+    "onAuthStateChanged"
 }

@@ -5,8 +5,11 @@ let make = (~children) => {
   let (state, setState) = React.useState(() => Sign)
 
   React.useEffect0(() => {
-    let callback = user => {
-      setState(_ => SignedIn(user))
+    let callback = u => {
+      switch u->Js.Nullable.toOption {
+      | None => FirebaseUI.start()
+      | Some(user) => setState(_ => SignedIn(user))
+      }
     }
     let unsub = Firebase.auth()->Firebase.Auth.onAuthStateChanged(callback)
 

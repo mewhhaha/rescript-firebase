@@ -1,12 +1,9 @@
 @react.component
-let make = (~files: array<Feed.file>) => {
+let make = (~files: array<Firestore.id>) => {
   files
-  ->Belt.Array.map(({t, id}) => {
+  ->Belt.Array.map(id => {
     let Firestore.Id(idString) = id
-    switch t {
-    | #image => <img key=idString src=idString />
-    | #video => <span key=idString> {React.string(idString)} </span>
-    }
+    React.null
   })
   ->React.array
 }

@@ -6,6 +6,7 @@ importers:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       reason-react: 0.9.1_66e0b3622af38de4e02a48c5b2ce312f
+      reason-uuid: 1.0.0
     devDependencies:
       '@snowpack/plugin-dotenv': 2.0.5
       '@snowpack/plugin-postcss': 1.1.0_postcss-cli@8.3.1+postcss@8.2.4
@@ -37,6 +38,7 @@ importers:
       react: ^17.0.1
       react-dom: ^17.0.1
       reason-react: ^0.9.1
+      reason-uuid: ^1.0.0
       shx: ^0.3.3
       snowpack: ^3.0.11
       snowpack-plugin-rescript: ^1.0.0
@@ -2805,6 +2807,12 @@ packages:
       react-dom: ^16.8.1
     resolution:
       integrity: sha512-nlH0O2TDy9KzOLOW+vlEQk4ExHOeciyzFdoLcsmmiit6hx6H5+CVDrwJ+8aiaLT/kqK5xFOjy4PS7PftWz4plA==
+  /reason-uuid/1.0.0:
+    dependencies:
+      uuid: 7.0.3
+    dev: false
+    resolution:
+      integrity: sha512-bNv01ylzSrEdOrEozlCUHNHQRGuRnbipIktS8TVjDJCr+U5b7Ddh4Iw9c7KO6xzZps6IXs5bBOdlHwZc2cLVXg==
   /rechoir/0.6.2:
     dependencies:
       resolve: 1.19.0
@@ -3221,6 +3229,11 @@ packages:
       node: '>= 0.4.0'
     resolution:
       integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+  /uuid/7.0.3:
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
   /uuid/8.3.2:
     dev: false
     hasBin: true
