@@ -20,13 +20,13 @@ type config = {
 
 let ui = makeUI(Firebase.auth())
 let container = "#firebaseui-auth-container"
-let makeConfig = callback => {
+let config = {
   signInOptions: [Firebase.Auth.googleAuthProvider->Firebase.Auth.getProviderId],
   callbacks: {
-    signInSuccessWithAuthResult: callback,
+    signInSuccessWithAuthResult: (_, _) => true,
     signInSuccessUrl: href,
     signInFlow: Some(#popup),
   },
 }
 
-let start = config => ui->startUI(container, config)
+let start = ui->startUI(container, config)
