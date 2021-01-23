@@ -37,28 +37,22 @@ let make = (~messages: array<Feed.message>, ~user: Firebase.Auth.user) => {
           ->Belt.Array.mapWithIndex((i, message) => {
             let (Firestore.Id(id), content) = message
             let firstRow = i == 0
-            let lastRow = i == group->Belt.Array.length - 1
-
+            let thisUser = user.uid == content.uid
             <span
               key=id
               className={cn([
-                "max-w-xs bg-gray-500 rounded-r-xl",
-                "rounded-tl-xl"->on(firstRow),
-                "rounded-br-xl"->on(lastRow),
-                if user.uid == content.uid {
+                "max-w-xs bg-gray-500",
+                "rounded-r-xl"->on(thisUser),
+                "rounded-tl-xl"->on(thisUser && firstRow),
+                "rounded-l-xl"->on(!thisUser),
+                "rounded-tr-xl"->on(!thisUser && firstRow),
+                if thisUser {
                   "self-start"
                 } else {
                   "self-end"
                 },
               ])}>
-              <MessageRow
-                content
-                user={if firstRow {
-                  Some(user)
-                } else {
-                  None
-                }}
-              />
+              <MessageRow content showUser=firstRow />
             </span>
           })
           ->React.array}

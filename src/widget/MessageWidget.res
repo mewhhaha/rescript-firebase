@@ -1,7 +1,9 @@
+open Classnames
+
 type state =
-  | LoadingDocuments
-  | ErrorDocuments
-  | LoadedDocuments(array<Feed.message>)
+  | LoadingMessages
+  | ErrorMessages
+  | LoadedMessages(array<Feed.message>)
 @send external messageContent: Firestore.document => Feed.content = "data"
 
 let onDocuments = callback => {
@@ -9,21 +11,22 @@ let onDocuments = callback => {
   db->collection("documents")->Collection.orderBy("created", #asc)->Collection.onSnapshot(callback)
 }
 
-let scrollToBottom = el => ReactDOM.domElementToObj(el)["scrollIntoView"](~block="end")
+let scrollToBottom = el => {
+  let elObj = ReactDOM.domElementToObj(el)
+  elObj["scrollTo"](0, elObj["scrollHeight"])
+}
 
-let scrollToSelf = (divRef: React.ref<Js.Nullable.t<Dom.element>>) => {
-  switch divRef.current->Js.Nullable.toOption {
-  | Some(el) => el->scrollToBottom
-  | _ => ()
-  }
+let scrollAtBottom = el => {
+  let elObj = ReactDOM.domElementToObj(el)
+  elObj["scrollHeight"] - elObj["scrollTop"] === elObj["clientHeight"]
 }
 
 let both = (a, b, v) => (v->a, v->b)
 
 @react.component
 let make = (~user: Firebase.Auth.user) => {
-  let (state, setState) = React.useState(() => LoadingDocuments)
-  let divRef = React.useRef(Js.Nullable.null)
+  let (state, setState) = React.useState(() => LoadingMessages)
+  let scrollRef = React.useRef(Js.Nullable.null)
 
   React.useEffect0(() => {
     open Firestore
@@ -32,14 +35,11 @@ let make = (~user: Firebase.Auth.user) => {
       let messages =
         query->Collection.toArray->Belt.Array.map(both(Firestore.Document.id, messageContent))
 
-      setState(_ => LoadedDocuments(messages))
-
-      open Belt
-      let lastMessage = messages->Array.get(messages->Array.length - 1)
-      let userMessage = lastMessage->Option.map(((_, content)) => content.uid == user.uid)
-      let shouldScroll = state == LoadedDocuments([]) || userMessage == Some(true)
-      if shouldScroll {
-        scrollToSelf(divRef)
+      let elOpt = scrollRef.current->Js.Nullable.toOption
+      let shouldScroll = elOpt->Belt.Option.map(scrollAtBottom)
+      setState(_ => LoadedMessages(messages))
+      if shouldScroll == Some(true) {
+        elOpt->Belt.Option.forEach(scrollToBottom)
       }
     }
     let unsub = onDocuments(callback)
@@ -47,16 +47,21 @@ let make = (~user: Firebase.Auth.user) => {
     Some(unsub)
   })
 
+  let onSend = () => scrollRef.current->Js.Nullable.toOption->Belt.Option.forEach(scrollToBottom)
+
   <div className="flex flex-col w-full min-h-0 max-w-sm h-full max-h-96">
     <div
-      className="flex flex-col flex-grow overflow-y-scroll overflow-anchor-none w-full bg-gray-700 p-1">
+      ref={ReactDOM.Ref.domRef(scrollRef)}
+      className={cn([
+        "flex flex-col flex-grow overflow-y-scroll overflow-anchor-none w-full bg-gray-700 p-1",
+        "animate-pulse"->on(state == LoadingMessages),
+      ])}>
       {switch state {
-      | LoadingDocuments => React.string("Loading")
-      | ErrorDocuments => React.string("Error")
-      | LoadedDocuments(messages) => <MessageArea messages user />
+      | LoadingMessages => React.null
+      | ErrorMessages => React.string("Error")
+      | LoadedMessages(messages) => <MessageArea messages user />
       }}
-      <div className="h-px flex-none overflow-anchor-auto" ref={ReactDOM.Ref.domRef(divRef)} />
     </div>
-    <SendArea user />
+    <SendArea user onSend />
   </div>
 }

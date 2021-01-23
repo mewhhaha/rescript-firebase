@@ -12,7 +12,7 @@ let reAcceptedImage = %re("/^image/")
 let reAcceptedVideo = %re("/^image/")
 
 @react.component
-let make = (~user: Firebase.Auth.user) => {
+let make = (~user: Firebase.Auth.user, ~onSend) => {
   let (text, setText) = React.useState(() => "")
   let (uploads, setUploads) = React.useState(() => [])
   let expanded = Js.String2.trim(text) != ""
@@ -31,6 +31,7 @@ let make = (~user: Firebase.Auth.user) => {
     | _ => {
         setText(_ => "")
         setUploads(_ => [])
+        onSend()
         addMessage({
           files: uploads->Belt.Array.map(((id, _)) => Firestore.Id(id)),
           text: text,
