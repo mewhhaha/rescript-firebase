@@ -9,8 +9,7 @@ let onDocuments = callback => {
   db->collection("documents")->Collection.orderBy("created", #asc)->Collection.onSnapshot(callback)
 }
 
-let scrollToBottom = el =>
-  ReactDOM.domElementToObj(el)["scrollIntoView"](~block="end", ~smooth=true)
+let scrollToBottom = el => ReactDOM.domElementToObj(el)["scrollIntoView"](~block="end")
 
 let scrollToSelf = (divRef: React.ref<Js.Nullable.t<Dom.element>>) => {
   switch divRef.current->Js.Nullable.toOption {
