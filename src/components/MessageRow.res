@@ -27,12 +27,7 @@ let make = (~content: Feed.content, ~showUser: bool) => {
           all2((ur, md))->then_(((url, metadata)) => {
             let fileCategory = metadata->Storage.contentType->Media.fileCategory
             setDownloads(
-              Array.map(_, d =>
-                switch d {
-                | (doId, _) when doId == id => (doId, Media.Finished(url, fileCategory))
-                | _ => d
-                }
-              ),
+              Array.map(_, d => d->Tuple.fst == id ? (id, Media.Finished(url, fileCategory)) : d),
             )
             resolve()
           }, _)->ignore
