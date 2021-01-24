@@ -49,9 +49,20 @@ let make = (~content: Feed.content, ~showUser: bool) => {
         </span>,
       )
     }
-    {files
+    {downloads
     ->Tag.children
-    ->Tag.conditional(<span className="pt-1"> <MediaGallery medias=downloads /> </span>)}
+    ->Tag.conditional(
+      <span className="pt-1">
+        <MediaGallery
+          medias=downloads
+          portraitSize={switch downloads->Array.length {
+          | 1 => MediaFrame.Any
+          | x when x > 1 && x < 5 => MediaFrame.Medium
+          | _ => MediaFrame.Small
+          }}
+        />
+      </span>,
+    )}
     <span className="text-white"> {React.string(text)} </span>
   </div>
 }

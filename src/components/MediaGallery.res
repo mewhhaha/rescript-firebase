@@ -4,11 +4,12 @@ open Classnames
 let make = (
   ~medias: array<(Firestore.id, Media.t)>,
   ~onAdd: option<ReactEvent.Mouse.t => unit>=?,
+  ~portraitSize=?,
 ) => {
   <div className="flex flex-wrap space-x-2 space-x-reverse space-y-2 space-y-reverse items-center">
     {medias
     ->Array.map(((Firestore.Id(id), media)) => {
-      <MediaFrame key=id media>
+      <MediaFrame key=id media size=portraitSize>
         {switch media {
         | Finished(src, #image) => <img src className="w-full h-full object-cover" />
         | Finished(src, #video) =>
