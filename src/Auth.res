@@ -1,4 +1,4 @@
-type state = Sign | SignedIn(Firebase.Auth.user) | SignedOut
+type state = Loading | SignIn | SignedIn(Firebase.Auth.user) | SignedOut
 
 let updateUser = ({uid: Firebase.Auth.UserId(uid), displayName}: Firebase.Auth.user) => {
   open Firestore
@@ -8,12 +8,15 @@ let updateUser = ({uid: Firebase.Auth.UserId(uid), displayName}: Firebase.Auth.u
 
 @react.component
 let make = (~children) => {
-  let (state, setState) = React.useState(() => Sign)
+  let (state, setState) = React.useState(() => Loading)
 
   React.useEffect0(() => {
     let callback = u => {
       switch u->Js.Nullable.toOption {
-      | None => FirebaseUI.start()
+      | None => {
+          setState(_ => SignIn)
+          FirebaseUI.start()
+        }
       | Some(user) => {
           updateUser(user)
           setState(_ => SignedIn(user))
@@ -25,7 +28,8 @@ let make = (~children) => {
     Some(unsub)
   })
   switch state {
-  | Sign => <div id="firebaseui-auth-container" />
+  | Loading => <Loading />
+  | SignIn => <div id="firebaseui-auth-container" />
   | SignedIn(user) => children(user)
   | SignedOut => React.string("Bye")
   }
