@@ -5,12 +5,14 @@ let portalId = "portal"
 @send external appendChild: (Dom.element, Dom.element) => unit = "appendChild"
 @send external removeChild: (Dom.element, Dom.element) => unit = "removeChild"
 
+let domPortal = lazy {getElementById("portal")}
+
 @react.component
 let make = (~children) => {
   let (el, _) = React.useState(() => createElement(#div))
 
   React.useEffect1(() => {
-    getElementById("portal")->Belt.Option.map(root => {
+    Lazy.force(domPortal)->Belt.Option.map(root => {
       root->appendChild(el)
 
       () => {

@@ -38,8 +38,8 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
   let (text, setText) = React.useState(() => "")
   let (uploads, setUploads) = React.useState(() => [])
   let expanded = Js.String2.trim(text) != "" || uploads != []
-  let finished = uploads->Array.every(((_, u)) =>
-    switch u {
+  let finished = uploads->Array.every(upload =>
+    switch upload->Tuple.snd {
     | Media.Finished(_) => true
     | _ => false
     }
@@ -56,7 +56,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
         setUploads(_ => [])
         onSend()
         addMessage({
-          files: uploads->Array.map(((id, _)) => id),
+          files: uploads->Array.map(Tuple.fst),
           text: text,
           uid: user.uid,
           created: serverTimestamp(),
