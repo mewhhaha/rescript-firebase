@@ -11,9 +11,9 @@ let make = (
     ->Array.map(((Firestore.Id(id), media)) => {
       <MediaFrame key=id media size=portraitSize>
         {switch media {
-        | Finished(src, #image) => <img src className="w-full h-full object-cover" />
+        | Finished(src, #image) => <img src className="w-full h-full object-fill rounded-md" />
         | Finished(src, #video) =>
-          <video className="w-full h-full object-cover"> <source src /> </video>
+          <video className="w-full h-full object-fill rounded-md"> <source src /> </video>
         | _ => React.null
         }}
       </MediaFrame>
