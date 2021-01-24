@@ -19,11 +19,7 @@ let make = (~group: array<Feed.message>, ~user: Firebase.Auth.user) => {
             "rounded-tl-xl"->on(thisUser && firstRow),
             "rounded-l-xl"->on(!thisUser),
             "rounded-tr-xl"->on(!thisUser && firstRow),
-            if thisUser {
-              "self-start"
-            } else {
-              "self-end"
-            },
+            thisUser ? "self-start" : "self-end",
           ])}>
           <MessageRow content showUser=firstRow />
         </span>
