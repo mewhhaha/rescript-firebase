@@ -2,7 +2,7 @@ open Classnames
 
 @react.component
 let make = (~group: array<Feed.message>, ~user: Firebase.Auth.user) => {
-  switch group->Array.get(0) {
+  switch group[0] {
   | None => React.null
   | Some((Firestore.Id(id), _)) =>
     <div key=id className="flex flex-col w-full space-y-0.5">

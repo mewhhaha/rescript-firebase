@@ -9,6 +9,7 @@ let make = (~medias: array<(Firestore.id, Media.t)>) => {
           switch fileCategory {
           | #image => <img src />
           | #video => <video className="flex-grow object-fill"> <source src={src} /> </video>
+          | #unknown => React.null
           }
         | Progress(_) => React.null
         | Error => React.null

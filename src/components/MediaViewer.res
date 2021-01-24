@@ -12,6 +12,7 @@ let make = (~src, ~fileCategory, ~onClose) => {
       | #image => <img src />
       | #video =>
         <video className="flex-grow object-cover" controls={true}> <source src={src} /> </video>
+      | #unknown => React.null
       }}
     </div>
   </div>

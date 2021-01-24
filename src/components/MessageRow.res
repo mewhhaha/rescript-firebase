@@ -40,19 +40,18 @@ let make = (~content: Feed.content, ~showUser: bool) => {
   })
 
   <div className="flex flex-col w-full px-2 py-1 break-words">
-    {switch showUser {
-    | true => {
-        let userColor = makeColor(uid)
+    {
+      let userColor = makeColor(uid)
+
+      showUser->Tag.conditional(
         <span className="text-xs font-bold pb-1" style={ReactDOM.Style.make(~color=userColor, ())}>
           <UserName uid />
-        </span>
-      }
-    | false => React.null
-    }}
-    {switch files {
-    | [] => React.null
-    | _ => <span className="pt-1"> <MediaArea medias=downloads /> </span>
-    }}
+        </span>,
+      )
+    }
+    {files
+    ->Tag.children
+    ->Tag.conditional(<span className="pt-1"> <MediaArea medias=downloads /> </span>)}
     <span className="text-white"> {React.string(text)} </span>
   </div>
 }
