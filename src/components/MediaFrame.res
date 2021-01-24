@@ -11,7 +11,7 @@ let make = (~children, ~media: Media.t) => {
       | _ => ()
       }}
     className={cn([
-      "flex flex-none focus:outline-none rounded-md w-12 h-12 hover:opacity-50 border first:mr-2",
+      "flex flex-none focus:outline-none rounded-md w-12 h-12 hover:opacity-50 border first:mr-2 mb-2",
       switch media {
       | Progress(_) => "bg-blue-300 animate-pulse"
       | Finished(_) => "bg-blue-400"

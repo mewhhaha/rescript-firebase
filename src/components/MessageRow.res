@@ -51,7 +51,7 @@ let make = (~content: Feed.content, ~showUser: bool) => {
     }
     {files
     ->Tag.children
-    ->Tag.conditional(<span className="pt-1"> <MediaArea medias=downloads /> </span>)}
+    ->Tag.conditional(<span className="pt-1"> <MediaGallery medias=downloads /> </span>)}
     <span className="text-white"> {React.string(text)} </span>
   </div>
 }

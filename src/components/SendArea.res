@@ -1,5 +1,7 @@
 open Classnames
 
+let click = el => ReactDOM.domElementToObj(el)["click"]()
+
 let targetValue = event => ReactEvent.Form.target(event)["value"]
 
 let addMessage = (content: Feed.content) => {
@@ -37,6 +39,7 @@ let listen = (task, file, setUpload) => {
 
 @react.component
 let make = (~user: Firebase.Auth.user, ~onSend) => {
+  let inputRef = React.useRef(Js.Nullable.null)
   let (text, setText) = React.useState(() => "")
   let (uploads, setUploads) = React.useState(() => [])
   let expanded = Js.String2.trim(text) != "" || uploads != []
@@ -81,7 +84,11 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
     }
   }
 
-  let onUpload = file => {
+  let onUpload = event => {
+    ReactEvent.Mouse.preventDefault(event)
+    inputRef.current->Js.Nullable.toOption->Option.forEach(click)
+  }
+  let onFileSelect = file => {
     if Media.reAcceptedMedia->Js.Re.test_(file->File.type_) {
       let uuid = Uuid.V4.make()
       let id = Firestore.Id(uuid)
@@ -106,11 +113,23 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
     }
   }
 
+  let onChange = event => {
+    open ReactEvent
+    let files: array<File.t> = Form.target(event)["files"]
+
+    files->Array.forEach(file => {
+      onFileSelect(file)
+    })
+  }
+
   <form className="flex flex-col space-y-2 p-4 w-full bg-gray-700" onSubmit>
-    <MediaArea medias=uploads />
+    <input
+      type_="file" multiple={true} ref={ReactDOM.Ref.domRef(inputRef)} className="hidden" onChange
+    />
+    {uploads->Tag.children->Tag.conditional(<MediaGallery medias=uploads onAdd=onUpload />)}
     <div className="flex items-end space-x-2">
       <div className={cn(["flex space-x-2 transition-all", expanded ? "max-w-0" : "max-w-xs"])}>
-        <UploadButton disabled={expanded} id="image" icon={React.string("U")} onUpload />
+        <IconButton disabled={expanded} icon={React.string("U")} onClick=onUpload />
       </div>
       <div
         className="flex flex-grow rounded-2xl min-w-0 bg-gray-200 px-4 py-1 focus-within:ring -mb-1">
