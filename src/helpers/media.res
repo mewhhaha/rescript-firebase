@@ -1,6 +1,6 @@
 let reAcceptedMedia = %re("/^((image)|(video))/")
 let reAcceptedImage = %re("/^image/")
-let reAcceptedVideo = %re("/^image/")
+let reAcceptedVideo = %re("/^video/")
 
 let fileCategory = t =>
   switch () {

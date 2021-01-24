@@ -10,8 +10,7 @@ let make = (~src, ~fileCategory, ~onClose) => {
     <div className="absolute z-50 object-center">
       {switch fileCategory {
       | #image => <img src />
-      | #video =>
-        <video className="flex-grow object-cover" controls={true}> <source src={src} /> </video>
+      | #video => <video controls={true}> <source src /> </video>
       | #unknown => React.null
       }}
     </div>
