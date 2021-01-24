@@ -24,12 +24,7 @@ let make = (~disabled, ~icon, ~id, ~onUpload) => {
       onChange
     />
     <button
-      onClick={_ => {
-        switch inputRef.current->Js.Nullable.toOption {
-        | None => ()
-        | Some(el) => el->click
-        }
-      }}
+      onClick={_ => inputRef.current->Js.Nullable.toOption->Option.forEach(click)}
       disabled
       className={cn([
         "focus:outline-none focus:ring text-white hover:text-black",

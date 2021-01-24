@@ -12,7 +12,7 @@ let make = (~children) => {
   let (el, _) = React.useState(() => createElement(#div))
 
   React.useEffect1(() => {
-    Lazy.force(domPortal)->Belt.Option.map(root => {
+    Lazy.force(domPortal)->Option.map(root => {
       root->appendChild(el)
 
       () => {

@@ -1,5 +1,7 @@
 open Classnames
 
+let targetValue = event => ReactEvent.Form.target(event)["value"]
+
 let addMessage = (content: Feed.content) => {
   open Firestore
   db->collection("documents")->Collection.add(content)
@@ -81,12 +83,13 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
 
   let onUpload = file => {
     if Media.reAcceptedMedia->Js.Re.test_(file->File.type_) {
-      let Firestore.Id(path) as id = Firestore.Id(Uuid.V4.make())
-      let fileRef = Storage.root->Storage.child(j`files/${path}`)
+      let uuid = Uuid.V4.make()
+      let id = Firestore.Id(uuid)
+      let fileRef = Storage.root->Storage.child(j`files/${uuid}`)
 
       let task = fileRef->Storage.put(file)
 
-      setUploads(prev => Array.concat([(id, Media.Progress(0.0))], prev))
+      setUploads(prev => Array.concat(prev, [(id, Media.Progress(0.0))]))
 
       let setUpload = v => {
         setUploads(
@@ -106,12 +109,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
   <form className="flex flex-col space-y-2 p-4 w-full bg-gray-700" onSubmit>
     <MediaArea medias=uploads />
     <div className="flex items-end space-x-2">
-      <div
-        className={cn([
-          "flex space-x-2 transition-all",
-          "max-w-0"->on(expanded),
-          "max-w-xs"->on(!expanded),
-        ])}>
+      <div className={cn(["flex space-x-2 transition-all", expanded ? "max-w-0" : "max-w-xs"])}>
         <UploadButton disabled={expanded} id="image" icon={React.string("U")} onUpload />
       </div>
       <div
@@ -125,7 +123,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
           ])}
           onKeyDown=onEnter
           value=text
-          onChange={event => setText(_ => ReactEvent.Form.target(event)["value"])}
+          onChange={event => setText(_ => event->targetValue)}
         />
       </div>
       <button
