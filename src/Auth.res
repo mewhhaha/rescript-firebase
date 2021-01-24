@@ -27,6 +27,7 @@ let make = (~children) => {
 
     Some(unsub)
   })
+
   switch state {
   | Loading => <Loading />
   | SignIn => <div id="firebaseui-auth-container" />
