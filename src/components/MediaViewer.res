@@ -1,5 +1,5 @@
 @react.component
-let make = (~src, ~fileType, ~onClose) => {
+let make = (~src, ~fileCategory, ~onClose) => {
   <div
     className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen"
     onClick={event => {
@@ -8,9 +8,9 @@ let make = (~src, ~fileType, ~onClose) => {
     }}>
     <div className="absolute w-full h-full bg-gray-500 opacity-50 z-40" />
     <div className="absolute z-50 object-center">
-      {switch fileType {
+      {switch fileCategory {
       | #image => <img src />
-      | _ =>
+      | #video =>
         <video className="flex-grow object-cover" controls={true}> <source src={src} /> </video>
       }}
     </div>

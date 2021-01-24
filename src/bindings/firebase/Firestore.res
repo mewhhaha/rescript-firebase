@@ -40,6 +40,7 @@ module Collection = {
 
 module Document = {
   @send external data: document => 'a = "data"
+  @send external set: (document, 'a) => unit = "set"
   @get external id: document => id = "id"
   @send external onSnapshot: (document, snapshot<document>) => unsubscribe = "onSnapshot"
 }

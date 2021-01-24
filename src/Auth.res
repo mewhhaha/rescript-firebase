@@ -1,5 +1,11 @@
 type state = Sign | SignedIn(Firebase.Auth.user) | SignedOut
 
+let updateUser = ({uid: Firebase.Auth.UserId(uid), displayName}: Firebase.Auth.user) => {
+  open Firestore
+  let userInfo: Feed.userInfo = {name: displayName}
+  db->collection("users")->Collection.document(uid)->Document.set(userInfo)
+}
+
 @react.component
 let make = (~children) => {
   let (state, setState) = React.useState(() => Sign)
@@ -8,7 +14,10 @@ let make = (~children) => {
     let callback = u => {
       switch u->Js.Nullable.toOption {
       | None => FirebaseUI.start()
-      | Some(user) => setState(_ => SignedIn(user))
+      | Some(user) => {
+          updateUser(user)
+          setState(_ => SignedIn(user))
+        }
       }
     }
     let unsub = Firebase.auth()->Firebase.Auth.onAuthStateChanged(callback)

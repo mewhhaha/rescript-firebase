@@ -9,7 +9,7 @@ let make = (~disabled, ~icon, ~id, ~onUpload) => {
     open ReactEvent
     let files: array<File.t> = Form.target(event)["files"]
 
-    files->Belt.Array.forEach(file => {
+    files->Array.forEach(file => {
       onUpload(file)
     })
   }

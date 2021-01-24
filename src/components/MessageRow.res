@@ -3,7 +3,7 @@ let makeColor = str => {
     str
     ->Js.String2.toLowerCase
     ->Js.String2.replaceByRe(%re("/[^0-9a-f]/g"), "")
-    ->Js.String2.substring(~from=0, ~to_=6)
+    ->Js.String2.substring(~from=0, ~to_=4)
   j`#${hex}`
 }
 
@@ -11,11 +11,11 @@ let makeColor = str => {
 let make = (~content: Feed.content, ~showUser: bool) => {
   let {uid: Firebase.Auth.UserId(uid), files, text} = content
   let (downloads, setDownloads) = React.useState(() =>
-    files->Belt.Array.map(f => (f, Media.Progress(0.0)))
+    files->Array.map(f => (f, Media.Progress(0.0)))
   )
 
   React.useEffect0(() => {
-    downloads->Belt.Array.forEach(download => {
+    downloads->Array.forEach(download => {
       switch download {
       | (id, Progress(_)) => {
           let Firestore.Id(path) = id
@@ -25,18 +25,11 @@ let make = (~content: Feed.content, ~showUser: bool) => {
 
           open Js.Promise
           all2((ur, md))->then_(((url, metadata)) => {
-            let fileType = if Media.reAcceptedImage->Js.Re.test_(metadata->Storage.contentType) {
-              #image
-            } else {
-              #video
-            }
+            let fileCategory = metadata->Storage.contentType->Media.fileCategory
             setDownloads(
-              Belt.Array.map(_, d =>
+              Array.map(_, d =>
                 switch d {
-                | (downloadId, _) when downloadId == id => (
-                    downloadId,
-                    Media.Finished(url, fileType),
-                  )
+                | (doId, _) when doId == id => (doId, Media.Finished(url, fileCategory))
                 | _ => d
                 }
               ),
@@ -56,7 +49,7 @@ let make = (~content: Feed.content, ~showUser: bool) => {
     | true => {
         let userColor = makeColor(uid)
         <span className="text-xs font-bold pb-1" style={ReactDOM.Style.make(~color=userColor, ())}>
-          {React.string(uid)}
+          <UserName uid />
         </span>
       }
     | false => React.null

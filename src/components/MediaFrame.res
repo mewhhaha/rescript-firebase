@@ -7,7 +7,7 @@ let make = (~children, ~media: Media.t) => {
   <button
     onClick={event =>
       switch (ReactEvent.Synthetic.defaultPrevented(event), media) {
-      | (false, Finished(src, fileType)) => setShow(_ => Some((src, fileType)))
+      | (false, Finished(src, fileCategory)) => setShow(_ => Some((src, fileCategory)))
       | _ => ()
       }}
     className={cn([
@@ -21,7 +21,7 @@ let make = (~children, ~media: Media.t) => {
     {children}
     {switch show {
     | None => React.null
-    | Some((src, fileType)) => <Portal> <MediaViewer src fileType onClose /> </Portal>
+    | Some((src, fileCategory)) => <Portal> <MediaViewer src fileCategory onClose /> </Portal>
     }}
   </button>
 }

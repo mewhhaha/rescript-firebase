@@ -1,3 +1,4 @@
+type userInfo = {name: string}
 type content = {
   created: Firestore.timestamp,
   uid: Firebase.Auth.userId,

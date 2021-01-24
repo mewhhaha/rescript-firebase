@@ -15,18 +15,14 @@ let listen = (task, file, setUpload) => {
       setUpload(Media.Error)
     },
     () => {
-      let fileType = if Media.reAcceptedImage->Js.Re.test_(file->File.type_) {
-        #image
-      } else {
-        #video
-      }
+      let fileCategory = file->File.type_->Media.fileCategory
       let reader = File.Reader.make()
       reader->File.Reader.on(
         #load,
         () => {
           switch reader->File.Reader.result {
           | None => ()
-          | Some(src) => setUpload(Media.Finished(src, fileType))
+          | Some(src) => setUpload(Media.Finished(src, fileCategory))
           }
         },
         false,
@@ -42,13 +38,13 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
   let (text, setText) = React.useState(() => "")
   let (uploads, setUploads) = React.useState(() => [])
   let expanded = Js.String2.trim(text) != "" || uploads != []
-  let finished = uploads->Belt.Array.every(((_, u)) =>
+  let finished = uploads->Array.every(((_, u)) =>
     switch u {
     | Media.Finished(_) => true
     | _ => false
     }
   )
-  let rows = text->Js.String2.splitAtMost("\n", ~limit=3)->Belt.Array.length
+  let rows = text->Js.String2.splitAtMost("\n", ~limit=3)->Array.length
 
   let sendMessage = () => {
     open Firestore.Timestamp
@@ -60,7 +56,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
         setUploads(_ => [])
         onSend()
         addMessage({
-          files: uploads->Belt.Array.map(((id, _)) => id),
+          files: uploads->Array.map(((id, _)) => id),
           text: text,
           uid: user.uid,
           created: serverTimestamp(),
@@ -90,13 +86,13 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
 
       let task = fileRef->Storage.put(file)
 
-      setUploads(prev => Belt.Array.concat([(id, Media.Progress(0.0))], prev))
+      setUploads(prev => Array.concat([(id, Media.Progress(0.0))], prev))
 
       let setUpload = v => {
         setUploads(
-          Belt.Array.map(_, u =>
+          Array.map(_, u =>
             switch u {
-            | (uploadId, Media.Progress(_)) when uploadId == id => (uploadId, v)
+            | (upId, Media.Progress(_)) when upId == id => (upId, v)
             | _ => u
             }
           ),

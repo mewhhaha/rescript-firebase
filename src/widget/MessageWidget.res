@@ -33,13 +33,13 @@ let make = (~user: Firebase.Auth.user) => {
 
     let callback = query => {
       let messages =
-        query->Collection.toArray->Belt.Array.map(both(Firestore.Document.id, messageContent))
+        query->Collection.toArray->Array.map(both(Firestore.Document.id, messageContent))
 
-      let elOpt = scrollRef.current->Js.Nullable.toOption
-      let shouldScroll = elOpt->Belt.Option.map(scrollAtBottom)
+      let elRef = scrollRef.current->Js.Nullable.toOption
+      let shouldScroll = elRef->Option.map(scrollAtBottom)
       setState(_ => LoadedMessages(messages))
       if shouldScroll == Some(true) {
-        elOpt->Belt.Option.forEach(scrollToBottom)
+        elRef->Option.forEach(scrollToBottom)
       }
     }
     let unsub = onDocuments(callback)
@@ -47,7 +47,7 @@ let make = (~user: Firebase.Auth.user) => {
     Some(unsub)
   })
 
-  let onSend = () => scrollRef.current->Js.Nullable.toOption->Belt.Option.forEach(scrollToBottom)
+  let onSend = () => scrollRef.current->Js.Nullable.toOption->Option.forEach(scrollToBottom)
 
   <div className="flex flex-col w-full min-h-0 max-w-sm h-full max-h-96">
     <div
