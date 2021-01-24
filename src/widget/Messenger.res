@@ -58,7 +58,7 @@ let make = (~user: Firebase.Auth.user) => {
         "animate-pulse"->on(state == LoadingMessages),
       ])}
       style={ReactDOM.Style.make(~backgroundImage=j`url(./svg/chat.svg)`, ())}>
-      <div className="flex flex-col w-11/12">
+      <div className="flex flex-col pt-6 w-11/12">
         {switch state {
         | LoadingMessages => React.null
         | ErrorMessages => React.string("Error")
