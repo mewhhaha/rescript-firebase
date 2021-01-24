@@ -49,19 +49,23 @@ let make = (~user: Firebase.Auth.user) => {
 
   let onSend = () => scrollRef.current->Js.Nullable.toOption->Option.forEach(scrollToBottom)
 
-  <div className="flex flex-col w-full min-h-0 max-w-sm h-full max-h-96">
+  <div className="flex flex-col w-full xl:max-w-4xl min-h-0 h-full bg-gray-700">
+    <TitleStripe />
     <div
       ref={ReactDOM.Ref.domRef(scrollRef)}
       className={cn([
-        "flex flex-col flex-grow overflow-y-scroll overflow-anchor-none w-full bg-gray-700 p-1",
+        "flex justify-center flex-grow overflow-y-scroll overflow-anchor-none",
         "animate-pulse"->on(state == LoadingMessages),
-      ])}>
-      {switch state {
-      | LoadingMessages => React.null
-      | ErrorMessages => React.string("Error")
-      | LoadedMessages(messages) => <MessageArea messages user />
-      }}
-      <div className="flex-none h-1 overflow-anchor-auto bg-gray-700" />
+      ])}
+      style={ReactDOM.Style.make(~backgroundImage=j`url(./svg/chat.svg)`, ())}>
+      <div className="flex flex-col w-11/12">
+        {switch state {
+        | LoadingMessages => React.null
+        | ErrorMessages => React.string("Error")
+        | LoadedMessages(messages) => <MessageArea messages user />
+        }}
+        <div className="flex-none w-full h-6 overflow-anchor-auto" />
+      </div>
     </div>
     <SendArea user onSend />
   </div>

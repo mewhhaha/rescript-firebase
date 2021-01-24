@@ -9,7 +9,7 @@ external accept: unit => unit = "accept"
 
 ReactDOMRe.renderToElementWithId(
   <React.StrictMode>
-    <div className="flex items-center justify-center w-screen h-screen">
+    <div className="flex items-center justify-center w-screen h-screen bg-gray-900">
       <Auth> {authResult => <App user=authResult />} </Auth>
     </div>
   </React.StrictMode>,

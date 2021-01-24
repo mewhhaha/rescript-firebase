@@ -14,10 +14,12 @@ let make = (~group: array<Feed.message>, ~user: Firebase.Auth.user) => {
         <span
           key=id
           className={cn([
-            "max-w-xs bg-gray-500",
-            "rounded-tl-xl"->on(thisUser && firstRow),
-            "rounded-tr-xl"->on(!thisUser && firstRow),
-            thisUser ? "self-start rounded-r-xl" : "self-end rounded-l-xl",
+            "max-w-xs",
+            "rounded-tl-xl"->on(!thisUser && firstRow),
+            "rounded-tr-xl"->on(thisUser && firstRow),
+            !thisUser
+              ? "self-start rounded-r-xl bg-gray-500"
+              : "self-end rounded-l-xl bg-green-700",
           ])}>
           <MessageRow content showUser=firstRow />
         </span>
