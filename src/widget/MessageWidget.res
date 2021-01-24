@@ -61,6 +61,7 @@ let make = (~user: Firebase.Auth.user) => {
       | ErrorMessages => React.string("Error")
       | LoadedMessages(messages) => <MessageArea messages user />
       }}
+      <div className="flex-none h-1 overflow-anchor-auto bg-gray-700" />
     </div>
     <SendArea user onSend />
   </div>

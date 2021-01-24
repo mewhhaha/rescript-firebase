@@ -63,6 +63,6 @@ let make = (~content: Feed.content, ~showUser: bool) => {
         />
       </span>,
     )}
-    <span className="text-white"> {React.string(text)} </span>
+    <span className="text-white whitespace-pre-wrap"> {React.string(text)} </span>
   </div>
 }

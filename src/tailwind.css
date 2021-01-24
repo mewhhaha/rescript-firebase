@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .overflow-anchor-auto {
+        overflow-anchor: auto
+    }
+
+    .overflow-anchor-none {
+        overflow-anchor: none
+    }
+}
