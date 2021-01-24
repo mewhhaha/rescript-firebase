@@ -6,9 +6,9 @@ type state =
   | LoadedMessages(array<Feed.message>)
 @send external messageContent: Firestore.document => Feed.content = "data"
 
-let onDocuments = callback => {
+let onMessages = callback => {
   open Firestore
-  db->collection("documents")->Collection.orderBy("created", #asc)->Collection.onSnapshot(callback)
+  db->collection("messages")->Collection.orderBy("created", #asc)->Collection.onSnapshot(callback)
 }
 
 let scrollToBottom = el => {
@@ -21,8 +21,6 @@ let scrollAtBottom = el => {
   elObj["scrollHeight"] - elObj["scrollTop"] === elObj["clientHeight"]
 }
 
-let both = (a, b, v) => (v->a, v->b)
-
 @react.component
 let make = (~user: Firebase.Auth.user) => {
   let (state, setState) = React.useState(() => LoadingMessages)
@@ -32,8 +30,7 @@ let make = (~user: Firebase.Auth.user) => {
     open Firestore
 
     let callback = query => {
-      let messages =
-        query->Collection.toArray->Array.map(both(Firestore.Document.id, messageContent))
+      let messages = query->Collection.docs->Array.map(Tuple.both(Document.id, messageContent))
 
       let elRef = scrollRef.current->Js.Nullable.toOption
       let shouldScroll = elRef->Option.map(scrollAtBottom)
@@ -42,7 +39,7 @@ let make = (~user: Firebase.Auth.user) => {
         elRef->Option.forEach(scrollToBottom)
       }
     }
-    let unsub = onDocuments(callback)
+    let unsub = onMessages(callback)
 
     Some(unsub)
   })

@@ -27,15 +27,7 @@ module Collection = {
   @send external onSnapshot: (collection, snapshot<query>) => unsubscribe = "onSnapshot"
   @send external add: (collection, 'a) => unit = "add"
   @send external orderBy: (collection, string, [#desc | #asc]) => collection = "orderBy"
-
-  let toArray = collection => {
-    let array = []
-    collection->forEach(doc => {
-      array |> Js.Array.push(doc) |> ignore
-    })
-
-    array
-  }
+  @get external docs: query => array<document> = "docs"
 }
 
 module Document = {

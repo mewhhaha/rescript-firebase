@@ -6,7 +6,7 @@ let targetValue = event => ReactEvent.Form.target(event)["value"]
 
 let addMessage = (content: Feed.content) => {
   open Firestore
-  db->collection("documents")->Collection.add(content)
+  db->collection("messages")->Collection.add(content)
 }
 
 let listen = (task, file, setUpload) => {
