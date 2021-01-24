@@ -13,7 +13,8 @@ let make = (~disabled, ~icon, ~id, ~onUpload) => {
       onUpload(file)
     })
   }
-  <div className="relative flex-none w-6 h-6 rounded-full hover:bg-gray-200">
+  <div
+    className={cn(["relative flex-none w-6 h-6 rounded-full", "hover:bg-gray-200"->on(!disabled)])}>
     <input
       type_="file"
       multiple={true}

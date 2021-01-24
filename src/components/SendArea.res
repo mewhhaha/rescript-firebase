@@ -5,20 +5,46 @@ let addMessage = (content: Feed.content) => {
   db->collection("documents")->Collection.add(content)
 }
 
-type upload = Finished(string, [#image | #video]) | Progress(float) | Error
+let listen = (task, file, setUpload) => {
+  task->Storage.on(
+    #state_change,
+    snapshot => {
+      setUpload(Media.Progress(snapshot->Storage.progress))
+    },
+    _ => {
+      setUpload(Media.Error)
+    },
+    () => {
+      let fileType = if Media.reAcceptedImage->Js.Re.test_(file->File.type_) {
+        #image
+      } else {
+        #video
+      }
+      let reader = File.Reader.make()
+      reader->File.Reader.on(
+        #load,
+        () => {
+          switch reader->File.Reader.result {
+          | None => ()
+          | Some(src) => setUpload(Media.Finished(src, fileType))
+          }
+        },
+        false,
+      )
 
-let reAcceptedMedia = %re("/^((image)|(video))/")
-let reAcceptedImage = %re("/^image/")
-let reAcceptedVideo = %re("/^image/")
+      reader->File.Reader.readAsDataURL(file)
+    },
+  )
+}
 
 @react.component
 let make = (~user: Firebase.Auth.user, ~onSend) => {
   let (text, setText) = React.useState(() => "")
   let (uploads, setUploads) = React.useState(() => [])
-  let expanded = Js.String2.trim(text) != ""
+  let expanded = Js.String2.trim(text) != "" || uploads != []
   let finished = uploads->Belt.Array.every(((_, u)) =>
     switch u {
-    | Finished(_) => true
+    | Media.Finished(_) => true
     | _ => false
     }
   )
@@ -26,14 +52,15 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
 
   let sendMessage = () => {
     open Firestore.Timestamp
-    switch text {
-    | "" => ()
-    | _ => {
+
+    switch expanded {
+    | false => ()
+    | true => {
         setText(_ => "")
         setUploads(_ => [])
         onSend()
         addMessage({
-          files: uploads->Belt.Array.map(((id, _)) => Firestore.Id(id)),
+          files: uploads->Belt.Array.map(((id, _)) => id),
           text: text,
           uid: user.uid,
           created: serverTimestamp(),
@@ -57,84 +84,31 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
   }
 
   let onUpload = file => {
-    if reAcceptedMedia->Js.Re.test_(file->File.type_) {
-      let id = Uuid.V4.make()
-      let fileRef = Storage.root->Storage.child(j`files/${id}`)
+    if Media.reAcceptedMedia->Js.Re.test_(file->File.type_) {
+      let Firestore.Id(path) as id = Firestore.Id(Uuid.V4.make())
+      let fileRef = Storage.root->Storage.child(j`files/${path}`)
 
       let task = fileRef->Storage.put(file)
 
-      setUploads(prev => Belt.Array.concat([(id, Progress(0.0))], prev))
+      setUploads(prev => Belt.Array.concat([(id, Media.Progress(0.0))], prev))
 
       let setUpload = v => {
         setUploads(
-          Belt.Array.map(_, f =>
-            switch f {
-            | (uploadId, Progress(_)) when uploadId == id => (uploadId, v)
-            | _ => f
+          Belt.Array.map(_, u =>
+            switch u {
+            | (uploadId, Media.Progress(_)) when uploadId == id => (uploadId, v)
+            | _ => u
             }
           ),
         )
       }
 
-      task->Storage.on(
-        #state_change,
-        snapshot => {
-          setUpload(Progress(snapshot->Storage.progress))
-        },
-        _ => {
-          setUpload(Error)
-        },
-        () => {
-          let fileType = if reAcceptedImage->Js.Re.test_(file->File.type_) {
-            #image
-          } else {
-            #video
-          }
-          let reader = File.Reader.make()
-          reader->File.Reader.on(
-            #load,
-            () => {
-              switch reader->File.Reader.result {
-              | None => ()
-              | Some(src) => setUpload(Finished(src, fileType))
-              }
-            },
-            false,
-          )
-
-          reader->File.Reader.readAsDataURL(file)
-        },
-      )
+      task->listen(file, setUpload)
     }
   }
 
   <form className="flex flex-col space-y-2 p-4 w-full bg-gray-700" onSubmit>
-    <div className="flex flex-wrap space-x-2 space-x-reverse space-y-2 space-y-reverse">
-      {uploads
-      ->Belt.Array.map(((id, upload)) =>
-        <div
-          key=id
-          className={cn([
-            "flex flex-none rounded-md w-12 h-12 border first:mr-2",
-            switch upload {
-            | Progress(_) => "bg-blue-300 animate-pulse"
-            | Finished(_) => "bg-blue-400"
-            | Error => "bg-red-400"
-            },
-          ])}>
-          {switch upload {
-          | Finished(src, fileType) =>
-            switch fileType {
-            | #image => <img src />
-            | _ => <video className="flex-grow object-cover"> <source src={src} /> </video>
-            }
-          | Progress(progress) => React.null
-          | Error => React.null
-          }}
-        </div>
-      )
-      ->React.array}
-    </div>
+    <MediaArea medias=uploads />
     <div className="flex items-end space-x-2">
       <div
         className={cn([
@@ -162,7 +136,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
         type_="submit"
         className={cn([
           "flex-none w-6 h-6 opacity-50 border-4",
-          if expanded {
+          if expanded && finished {
             "transition-opacity bg-blue-600 border-blue-200 hover:opacity-100"
           } else {
             "bg-gray-600 border-gray-200"

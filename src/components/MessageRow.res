@@ -10,6 +10,46 @@ let makeColor = str => {
 @react.component
 let make = (~content: Feed.content, ~showUser: bool) => {
   let {uid: Firebase.Auth.UserId(uid), files, text} = content
+  let (downloads, setDownloads) = React.useState(() =>
+    files->Belt.Array.map(f => (f, Media.Progress(0.0)))
+  )
+
+  React.useEffect0(() => {
+    downloads->Belt.Array.forEach(download => {
+      switch download {
+      | (id, Progress(_)) => {
+          let Firestore.Id(path) = id
+          let fileRef = Storage.root->Storage.child(j`files/${path}`)
+          let ur = fileRef->Storage.getDownloadURL
+          let md = fileRef->Storage.getMetadata
+
+          open Js.Promise
+          all2((ur, md))->then_(((url, metadata)) => {
+            let fileType = if Media.reAcceptedImage->Js.Re.test_(metadata->Storage.contentType) {
+              #image
+            } else {
+              #video
+            }
+            setDownloads(
+              Belt.Array.map(_, d =>
+                switch d {
+                | (downloadId, _) when downloadId == id => (
+                    downloadId,
+                    Media.Finished(url, fileType),
+                  )
+                | _ => d
+                }
+              ),
+            )
+            resolve()
+          }, _)->ignore
+        }
+      | _ => ()
+      }
+    })
+
+    None
+  })
 
   <div className="flex flex-col w-full px-2 py-1 break-words">
     {switch showUser {
@@ -23,7 +63,7 @@ let make = (~content: Feed.content, ~showUser: bool) => {
     }}
     {switch files {
     | [] => React.null
-    | _ => <FileArea files />
+    | _ => <span className="pt-1"> <MediaArea medias=downloads /> </span>
     }}
     <span className="text-white"> {React.string(text)} </span>
   </div>
