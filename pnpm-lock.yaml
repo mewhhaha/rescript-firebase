@@ -1,10 +1,12 @@
 importers:
   .:
     dependencies:
+      bs-platform: 8.4.2
       firebase: 8.2.3
       firebaseui: 4.7.1_firebase@8.2.3
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
+      react-focus-on: 3.5.1_react@17.0.1
       reason-react: 0.9.1_66e0b3622af38de4e02a48c5b2ce312f
       reason-uuid: 1.0.0
     devDependencies:
@@ -14,7 +16,6 @@ importers:
       '@snowpack/plugin-run-script': 2.3.0
       '@snowpack/web-test-runner-plugin': 0.2.1_snowpack@3.0.11
       autoprefixer: 10.2.3_postcss@8.2.4
-      bs-platform: 8.4.2
       postcss: 8.2.4
       postcss-cli: 8.3.1_postcss@8.2.4
       prettier: 2.2.1
@@ -37,6 +38,7 @@ importers:
       prettier: ^2.2.1
       react: ^17.0.1
       react-dom: ^17.0.1
+      react-focus-on: ^3.5.1
       reason-react: ^0.9.1
       reason-uuid: ^1.0.0
       shx: ^0.3.3
@@ -197,6 +199,12 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-U40A76x5gTwmESz+qiqssqmeEsKvcSyvtgktrm0uzcARAmM9I1jR221f6Oq+GmHrcD+LvZDag1UTOTe2fL3TeA==
+  /@babel/runtime/7.12.5:
+    dependencies:
+      regenerator-runtime: 0.13.7
+    dev: false
+    resolution:
+      integrity: sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
   /@babel/template/7.12.7:
     dependencies:
       '@babel/code-frame': 7.12.11
@@ -919,6 +927,14 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-mM8522psRCqzV+6LhomX5wgp25YVibjh8Wj23I5RPkPppSVSjyKD2A2mBJmWGa+KN7f2D6LNh9jkBCeyLktzjg==
+  /aria-hidden/1.1.1:
+    dependencies:
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    resolution:
+      integrity: sha512-M7zYxCcOQPOaxGHoMTKUFD2UNcVFTp9ycrdStLcTPLf8zgTXC3+YcGe+UuzSh5X1BX/0/PtS8xTNy4xyH/6xtw==
   /array-flatten/1.1.1:
     dev: false
     resolution:
@@ -1022,6 +1038,7 @@ packages:
     resolution:
       integrity: sha512-UXhDrwqsNcpTYJBTZsbGATDxZbiVDsx6UjpmRUmtnP10pr8wAYr5LgFoEFw9ixriQH2mv/NX2SfGzE/o8GndLA==
   /bs-platform/8.4.2:
+    dev: false
     hasBin: true
     requiresBuild: true
     resolution:
@@ -1294,6 +1311,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
+  /detect-node-es/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-S4AHriUkTX9FoFvL4G8hXDcx6t3gp2HpfCza3Q0v6S78gul2hKWifLQbeW+ZF89+hSm2ZIc/uF3J97ZgytgTRg==
   /detective/5.2.0:
     dependencies:
       acorn-node: 1.8.2
@@ -1614,6 +1635,14 @@ packages:
       firebase: '>=7.11.0'
     resolution:
       integrity: sha512-wDdo3LLnh9sV1dDKyNgn4M7cKecILosvqvtQE1SUum/R+eXLdN1q1ZRKZ2Lp6ZyP0XDAHrotssS4vJNh4OdwuQ==
+  /focus-lock/0.8.1:
+    dependencies:
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-/LFZOIo82WDsyyv7h7oc0MJF9ACOvDRdx9rWPZ2pgMfNWu/z8hQDBtOchuB/0BVLmuFOZjV02YwUVzNsWx/EzA==
   /forwarded/0.1.2:
     dev: false
     engines:
@@ -1722,6 +1751,12 @@ packages:
       node: 6.* || 8.* || >= 10.*
     resolution:
       integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
+  /get-nonce/1.0.1:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==
   /get-stdin/8.0.0:
     dev: true
     engines:
@@ -1989,6 +2024,12 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
+  /invariant/2.2.4:
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
+    resolution:
+      integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
   /ipaddr.js/1.9.1:
     dev: false
     engines:
@@ -2665,6 +2706,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-MG5r82wBzh7pSKDRa9y+vllNHz3e3d4CNj1PQE4BQYxLme0gKYYBm9YENq+UkEikyZ0XbiGWxYlVw3Rl9O/U8g==
+  /prop-types/15.7.2:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react-is: 16.13.1
+    dev: false
+    resolution:
+      integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
   /protobufjs/6.10.2:
     dependencies:
       '@protobufjs/aspromise': 1.1.2
@@ -2744,6 +2793,15 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-4Oz8DUIwdvoa5qMJelxipzi/iJIi40O5cGV1wNYp5hvZP8ZN0T+jiNkL0QepXs+EsQ9XJ8ipEDoiH70ySUJP3Q==
+  /react-clientside-effect/1.2.3_react@17.0.1:
+    dependencies:
+      '@babel/runtime': 7.12.5
+      react: 17.0.1
+    dev: false
+    peerDependencies:
+      react: ^15.3.0 || ^16.0.0 || ^17.0.0
+    resolution:
+      integrity: sha512-96HOmjJjjemxZD4qMdaMWFl3d/3Dqm/MAXnThoP8+jQihevYs8VzooqYWlVEPmkp9tVIa06i67R7FF1qsuzUwQ==
   /react-dom/17.0.1_react@17.0.1:
     dependencies:
       loose-envify: 1.4.0
@@ -2755,12 +2813,102 @@ packages:
       react: 17.0.1
     resolution:
       integrity: sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug==
+  /react-focus-lock/2.5.0_react@17.0.1:
+    dependencies:
+      '@babel/runtime': 7.12.5
+      focus-lock: 0.8.1
+      prop-types: 15.7.2
+      react: 17.0.1
+      react-clientside-effect: 1.2.3_react@17.0.1
+      use-callback-ref: 1.2.5_react@17.0.1
+      use-sidecar: 1.0.4_react@17.0.1
+    dev: false
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+    resolution:
+      integrity: sha512-XLxj6uTXgz0US8TmqNU2jMfnXwZG0mH2r/afQqvPEaX6nyEll5LHVcEXk2XDUQ34RVeLPkO/xK5x6c/qiuSq/A==
+  /react-focus-on/3.5.1_react@17.0.1:
+    dependencies:
+      aria-hidden: 1.1.1
+      react: 17.0.1
+      react-focus-lock: 2.5.0_react@17.0.1
+      react-remove-scroll: 2.4.1_react@17.0.1
+      react-style-singleton: 2.1.1_react@17.0.1
+      use-callback-ref: 1.2.5_react@17.0.1
+      use-sidecar: 1.0.4_react@17.0.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    resolution:
+      integrity: sha512-6iE56nYNwVU6Pke362TjqRLz/G7DBGnEugkxhPAhpXEZW5og3vhc9qDPlyiHgxoiY9kYTWjdAEFz4nJgSluANg==
+  /react-is/16.13.1:
+    dev: false
+    resolution:
+      integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
   /react-refresh/0.9.0:
     dev: true
     engines:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==
+  /react-remove-scroll-bar/2.1.1_react@17.0.1:
+    dependencies:
+      react: 17.0.1
+      react-style-singleton: 2.1.1_react@17.0.1
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    resolution:
+      integrity: sha512-IZbfQPSozIr8ylHE9MFcQeb2TTzj4abfE7OBXjmtUeXQ5h6ColGKDNo5h7OmzrJRilAx3YIKBf3jb0yrb31BJQ==
+  /react-remove-scroll/2.4.1_react@17.0.1:
+    dependencies:
+      react: 17.0.1
+      react-remove-scroll-bar: 2.1.1_react@17.0.1
+      react-style-singleton: 2.1.1_react@17.0.1
+      tslib: 1.14.1
+      use-callback-ref: 1.2.5_react@17.0.1
+      use-sidecar: 1.0.4_react@17.0.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    resolution:
+      integrity: sha512-K7XZySEzOHMTq7dDwcHsZA6Y7/1uX5RsWhRXVYv8rdh+y9Qz2nMwl9RX/Mwnj/j7JstCGmxyfyC0zbVGXYh3mA==
+  /react-style-singleton/2.1.1_react@17.0.1:
+    dependencies:
+      get-nonce: 1.0.1
+      invariant: 2.2.4
+      react: 17.0.1
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    resolution:
+      integrity: sha512-jNRp07Jza6CBqdRKNgGhT3u9umWvils1xsuMOjZlghBDH2MU0PL2WZor4PGYjXpnRCa9DQSlHMs/xnABWOwYbA==
   /react/17.0.1:
     dependencies:
       loose-envify: 1.4.0
@@ -2828,6 +2976,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-8liAVezDmUcH+tdzoEGrhfbGcP7nOV4NkGE3a74+qqvE7nt9i4sKLGBuZNOnpI4WiGksiNPklZxva80061QiPg==
+  /regenerator-runtime/0.13.7:
+    dev: false
+    resolution:
+      integrity: sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==
   /require-directory/2.1.1:
     dev: true
     engines:
@@ -3220,6 +3372,32 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=
+  /use-callback-ref/1.2.5_react@17.0.1:
+    dependencies:
+      react: 17.0.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    resolution:
+      integrity: sha512-gN3vgMISAgacF7sqsLPByqoePooY3n2emTH59Ur5d/M8eg4WTWu1xp8i8DHjohftIyEx0S08RiYxbffr4j8Peg==
+  /use-sidecar/1.0.4_react@17.0.1:
+    dependencies:
+      detect-node-es: 1.0.0
+      react: 17.0.1
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+    resolution:
+      integrity: sha512-A5ggIS3/qTdxCAlcy05anO2/oqXOfpmxnpRE1Jm+fHHtCvUvNSZDGqgOSAXPriBVAcw2fMFFkh5v5KqrFFhCMA==
   /util-deprecate/1.0.2:
     resolution:
       integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
