@@ -7,11 +7,13 @@ let make = (~children, ~media: Media.t, ~size=Some(Small)) => {
   let (show, setShow) = React.useState(_ => None)
   let onClose = () => setShow(_ => None)
   <button
-    onClick={event =>
-      switch (ReactEvent.Synthetic.defaultPrevented(event), media) {
+    onClick={event => {
+      switch (ReactEvent.Mouse.defaultPrevented(event), media) {
       | (false, Finished(src, fileCategory)) => setShow(_ => Some((src, fileCategory)))
       | _ => ()
-      }}
+      }
+      ReactEvent.Mouse.preventDefault(event)
+    }}
     className={cn([
       "flex focus:outline-none hover:opacity-50 first:mr-2 mb-2",
       switch media {
