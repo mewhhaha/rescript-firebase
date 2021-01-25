@@ -11,7 +11,7 @@ pnpm start
 ```
 
 ## To deploy
-You need to set up [Firebase](https://firebase.google.com/firebase-and-gcp) and then you should just be able to deploy it with the cli `firebase deploy`
+You need to set up [Firebase](https://firebase.google.com/firebase-and-gcp) and then you need to change `public/config.js` to your own configuration. Then it should be possible to deploy.
 
 ## Plugins
 Recommended to use [rescript-vscode](https://marketplace.visualstudio.com/items?itemName=chenglou92.rescript-vscode)
