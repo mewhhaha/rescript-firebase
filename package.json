@@ -1,33 +1,23 @@
 {
-  "name": "app-template-reason-react",
-  "version": "2.0.0",
+  "name": "rescript-firebase",
+  "version": "0.0.1",
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jihchi/app-template-reason-react.git"
+    "url": "https://github.com/mewhhaha/rescript-firebase"
   },
   "engines": {
     "node": ">=14",
     "pnpm": ">=5.15"
   },
   "keywords": [
-    "csa-template",
     "reason-react",
+    "firebase",
     "reasonml",
     "bucklescript",
     "rescript",
     "react"
-  ],
-  "files": [
-    ".gitignore",
-    "bsconfig.json",
-    "README.md",
-    "snowpack.config.js",
-    "web-test-runner.config.js",
-    "public/*",
-    "src/**/*.res",
-    "src/**/*.css",
-    "src/**/*.svg"
   ],
   "publishConfig": {
     "access": "public"
