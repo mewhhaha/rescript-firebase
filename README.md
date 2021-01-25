@@ -15,3 +15,6 @@ You need to set up [Firebase](https://firebase.google.com/firebase-and-gcp) and 
 
 ## Plugins
 Recommended to use [rescript-vscode](https://marketplace.visualstudio.com/items?itemName=chenglou92.rescript-vscode)
+
+## Screenshots
+![Screenshot of cool application](media/screenshot.png)
