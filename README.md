@@ -1,4 +1,4 @@
-# Rescript chat app
+# ReScript chat app
 This is a simple chat app built with [ReScript](https://rescript-lang.org/), [Snowpack](https://www.snowpack.dev/), [pnpm](https://pnpm.js.org/), [Firebase](https://firebase.google.com/firebase-and-gcp) and [tailwindcss](https://tailwindcss.com/). It was made to try out using ReScript in a functional application. This is my first ReScript project so if things are funky, _that's why_.
 
 ## Try it out
