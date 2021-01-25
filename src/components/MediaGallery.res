@@ -2,13 +2,13 @@ open Classnames
 
 @react.component
 let make = (
-  ~medias: array<(Firestore.id, Media.t)>,
+  ~medias: array<(File.Id.t, Media.t)>,
   ~onAdd: option<ReactEvent.Mouse.t => unit>=?,
   ~portraitSize=?,
 ) => {
   <div className="flex flex-wrap space-x-2 space-x-reverse space-y-2 space-y-reverse items-center">
     {medias
-    ->Array.map(((Firestore.Id(id), media)) => {
+    ->Array.map(((File.Id.Uuid(id), media)) => {
       <MediaFrame key=id media size=portraitSize>
         {switch media {
         | Finished(src, #image) => <img src className="w-full h-full object-fill rounded-md" />

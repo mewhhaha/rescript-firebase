@@ -18,8 +18,8 @@ let make = (~content: Feed.content, ~showUser: bool) => {
     downloads->Array.forEach(download => {
       switch download {
       | (id, Progress(_)) => {
-          let Firestore.Id(path) = id
-          let fileRef = Storage.root->Storage.child(j`files/${path}`)
+          let File.Id.Uuid(uuid) = id
+          let fileRef = Storage.root->Storage.child(j`files/${uuid}`)
           let ur = fileRef->Storage.getDownloadURL
           let md = fileRef->Storage.getMetadata
 

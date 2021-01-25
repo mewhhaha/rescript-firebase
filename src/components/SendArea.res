@@ -90,8 +90,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
   }
   let onFileSelect = file => {
     if Media.reAcceptedMedia->Js.Re.test_(file->File.type_) {
-      let uuid = Uuid.V4.make()
-      let id = Firestore.Id(uuid)
+      let File.Id.Uuid(uuid) as id = File.Id.make()
       let fileRef = Storage.root->Storage.child(j`files/${uuid}`)
 
       let task = fileRef->Storage.put(file)

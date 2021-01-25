@@ -1,6 +1,13 @@
 type t
 type fileReader
 
+module Id = {
+  @unboxed
+  type t = Uuid(string)
+
+  let make = () => Uuid(Uuid.V4.make())
+}
+
 @get external type_: t => string = "type"
 @get external name: t => string = "name"
 
