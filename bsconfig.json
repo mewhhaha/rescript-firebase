@@ -1,17 +1,24 @@
 {
   "$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
   "name": "rescript-app",
-  "reason": { "react-jsx": 3 },
+  "reason": {
+    "react-jsx": 3
+  },
   "sources": [
     {
       "dir": "src",
       "subdirs": true
     }
   ],
-  "package-specs": [{ "module": "es6", "in-source": true }],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
   "suffix": ".bs.js",
   "namespace": true,
-  "bs-dependencies": ["reason-react", "reason-uuid"],
+  "bs-dependencies": ["@rescript/react", "reason-uuid"],
   "bs-dev-dependencies": [],
   "bsc-flags": ["-open Belt"],
   "ppx-flags": [],
