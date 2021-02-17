@@ -10,7 +10,7 @@ let groupBy = (array, get) => {
         let pushNext = () => groups->Js.Array.push([item], _)->ignore
 
         switch groups[lastIndex]->Option.flatMap(group => group->Array.get(0)) {
-        | Some(prev) when get(prev) == get(item) => pushLast()
+        | Some(prev) if get(prev) == get(item) => pushLast()
         | None => pushLast()
         | _ => pushNext()
         }

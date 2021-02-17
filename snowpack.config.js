@@ -10,7 +10,6 @@ module.exports = {
     target: 'es2020',
   },
   plugins: [
-    'snowpack-plugin-rescript',
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-postcss',

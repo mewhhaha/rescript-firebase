@@ -101,7 +101,7 @@ let make = (~user: Firebase.Auth.user, ~onSend) => {
         setUploads(
           Array.map(_, u =>
             switch u {
-            | (upId, Media.Progress(_)) when upId == id => (upId, v)
+            | (upId, Media.Progress(_)) if upId == id => (upId, v)
             | _ => u
             }
           ),

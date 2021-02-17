@@ -16,6 +16,7 @@
       "in-source": true
     }
   ],
+  "external-stdlib": "@rescript/std",
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": ["@rescript/react", "reason-uuid"],

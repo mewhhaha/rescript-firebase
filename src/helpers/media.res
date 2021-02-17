@@ -4,8 +4,8 @@ let reAcceptedVideo = %re("/^video/")
 
 let fileCategory = t =>
   switch () {
-  | _ when reAcceptedImage->Js.Re.test_(t) => #image
-  | _ when reAcceptedVideo->Js.Re.test_(t) => #video
+  | _ if reAcceptedImage->Js.Re.test_(t) => #image
+  | _ if reAcceptedVideo->Js.Re.test_(t) => #video
   | _ => #unknown
   }
 

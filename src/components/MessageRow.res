@@ -57,7 +57,7 @@ let make = (~content: Feed.content, ~showUser: bool) => {
           medias=downloads
           portraitSize={switch downloads->Array.length {
           | 1 => MediaFrame.Any
-          | x when x > 1 && x < 5 => MediaFrame.Medium
+          | x if x > 1 && x < 5 => MediaFrame.Medium
           | _ => MediaFrame.Small
           }}
         />
